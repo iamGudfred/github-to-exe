@@ -1,8 +1,7 @@
-import os
 from pathlib import Path
 
 class Config:
-    # Security settings
+    # Security
     MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
     ALLOWED_EXTENSIONS = {'.py', '.txt', '.md', '.yml', '.yaml', '.json'}
     BLACKLISTED_PATTERNS = [
@@ -19,6 +18,8 @@ class Config:
     BUILD_DIR = BASE_DIR / "builds"
     UPLOAD_DIR = BASE_DIR / "uploads"
     
-    # Ensure directories exist
-    BUILD_DIR.mkdir(exist_ok=True)
-    UPLOAD_DIR.mkdir(exist_ok=True)
+    @classmethod
+    def ensure_dirs(cls):
+        """Create directories only when needed (not at import time)"""
+        cls.BUILD_DIR.mkdir(exist_ok=True)
+        cls.UPLOAD_DIR.mkdir(exist_ok=True)
