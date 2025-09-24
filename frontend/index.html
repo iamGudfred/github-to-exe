@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub-to-EXE - Convert Code to Executables</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .input-section:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+
+        .file-upload-area {
+            text-align: center;
+            padding: 40px 20px;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #4CAF50;
+        }
+
+        .file-upload-area.dragover {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .file-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .remove-file {
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .options-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: "⚙️";
+            margin-right: 10px;
+        }
+
+        .os-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .os-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .os-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .os-option.selected {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+        }
+
+        .os-option input[type="radio"] {
+            display: none;
+        }
+
+        .os-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .os-info h3 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .os-info p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .build-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .option-label {
+            color: white;
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .build-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .build-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .build-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .status-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 25px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .status-text {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .download-section {
+            display: none;
+            text-align: center;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .download-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .download-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .warning-box strong {
+            color: #FFC107;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .os-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .build-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 GitHub-to-EXE</h1>
+            <p>Transform any code into executable files for Windows, Mac, or Linux</p>
+            <div class="warning-box">
+                <strong>⚠️ Security Notice:</strong> This tool compiles third-party code. Only use repositories and files you trust. 
+                Always scan downloaded executables with antivirus software before running.
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab(0)">📂 GitHub Repository</button>
+                <button class="tab" onclick="switchTab(1)">📎 Upload Files</button>
+            </div>
+
+            <!-- Tab 1: GitHub URL -->
+            <div class="tab-content active" id="tab-0">
+                <div class="input-section">
+                    <h3 style="color: white; margin-bottom: 15px;">📂 Enter GitHub Repository URL</h3>
+                    <input type="text" class="url-input" id="repoUrl" 
+                           placeholder="https://github.com/username/repository-name">
+                    <p style="color: rgba(255,255,255,0.7); font-size: 14px;">
+                        Enter the URL of any public GitHub repository containing Python, C++, or other supported code
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tab 2: File Upload -->
+            <div class="tab-content" id="tab-1">
+                <div class="input-section">
+                    <h3 style="color: white; margin-bottom: 15px;">📎 Upload Your Source Files</h3>
+                    <div class="file-upload-area" onclick="document.getElementById('fileInput').click()" 
+                         ondrop="handleDrop(event)" ondragover="handleDragOver(event)" 
+                         ondragleave="handleDragLeave(event)">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Drop files here or click to browse</div>
+                        <div class="upload-subtext">
+                            Supports: .py, .cpp, .c, .js, .java, .zip, .tar.gz and more<br>
+                            Maximum file size: 50MB per file
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" multiple 
+                           accept=".py,.cpp,.c,.h,.js,.java,.zip,.tar.gz,.rar,.7z,.txt,.md,.json,.yml,.yaml">
+                    <div class="file-list" id="fileList"></div>
+                </div>
+            </div>
+
+            <!-- Build Options -->
+            <div class="options-section">
+                <div class="section-title">Target Operating System</div>
+                <div class="os-selection">
+                    <label class="os-option selected" onclick="selectOS(this)">
+                        <input type="radio" name="os" value="windows" checked>
+                        <div class="os-icon">🖥️</div>
+                        <div class="os-info">
+                            <h3>Windows</h3>
+                            <p>Generate .exe executable</p>
+                        </div>
+                    </label>
+                    <label class="os-option" onclick="selectOS(this)">
+                        <input type="radio" name="os" value="mac">
+                        <div class="os-icon">🍎</div>
+                        <div class="os-info">
+                            <h3>macOS</h3>
+                            <p>Generate .app bundle</p>
+                        </div>
+                    </label>
+                    <label class="os-option" onclick="selectOS(this)">
+                        <input type="radio" name="os" value="linux">
+                        <div class="os-icon">🐧</div>
+                        <div class="os-info">
+                            <h3>Linux</h3>
+                            <p>Generate binary executable</p>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="section-title">Build Options</div>
+                <div class="build-options">
+                    <div class="option-item">
+                        <span class="option-label">Include Dependencies</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="includeDeps" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="option-item">
+                        <span class="option-label">Console Window</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="showConsole">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="option-item">
+                        <span class="option-label">Optimize Size</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="optimizeSize" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="option-item">
+                        <span class="option-label">Code Obfuscation</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="obfuscate">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Build Button -->
+            <button class="build-button" onclick="startBuild()" id="buildBtn">
+                🔨 Build Executable
+            </button>
+
+            <!-- Status Section -->
+            <div class="status-section" id="statusSection">
+                <div class="status-text" id="statusText">Starting build...</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section" id="downloadSection">
+                <h3 style="color: white; margin-bottom: 20px;">✅ Build Complete!</h3>
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">
+                    Your executable has been successfully created and is ready for download.
+                </p>
+                <a href="#" class="download-button" id="downloadLink">
+                    📦 Download Executable
+                </a>
+                <div style="margin-top: 20px; color: rgba(255,255,255,0.7);">
+                    <p>Build completed in <span id="buildTime">--</span> seconds</p>
+                    <p>File size: <span id="fileSize">--</span> MB</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFiles = [];
+        let buildStartTime;
+
+        function switchTab(index) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+        }
+
+        function selectOS(element) {
+            document.querySelectorAll('.os-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('dragover');
+            
+            const files = Array.from(event.dataTransfer.files);
+            addFiles(files);
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const files = Array.from(event.target.files);
+            addFiles(files);
+        });
+
+        function addFiles(files) {
+            files.forEach(file => {
+                if (file.size > 50 * 1024 * 1024) { // 50MB limit
+                    alert(`File ${file.name} is too large. Maximum size is 50MB.`);
+                    return;
+                }
+                
+                if (!uploadedFiles.some(f => f.name === file.name && f.size === file.size)) {
+                    uploadedFiles.push(file);
+                }
+            });
+            
+            updateFileList();
+        }
+
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            uploadedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileIcon = getFileIcon(file.name);
+                const fileSize = (file.size / 1024).toFixed(1) + ' KB';
+                
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <span class="file-icon">${fileIcon}</span>
+                        <span>${file.name} (${fileSize})</span>
+                    </div>
+                    <button class="remove-file" onclick="removeFile(${index})">×</button>
+                `;
+                
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateFileList();
+        }
+
+        function getFileIcon(filename) {
+            const extension = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'py': '🐍',
+                'js': '📜',
+                'cpp': '⚙️',
+                'c': '⚙️',
+                'h': '📄',
+                'java': '☕',
+                'zip': '🗜️',
+                'tar': '📦',
+                'gz': '📦',
+                'rar': '🗜️',
+                '7z': '🗜️'
+            };
+            return icons[extension] || '📄';
+        }
+
+        function updateProgress(percent, message) {
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('statusText').textContent = message;
+        }
+
+        function showStatus(show = true) {
+            document.getElementById('statusSection').classList.toggle('active', show);
+        }
+
+        function showDownload(show = true, downloadUrl = '', buildTime = 0, fileSize = 0) {
+            const downloadSection = document.getElementById('downloadSection');
+            downloadSection.classList.toggle('active', show);
+            
+            if (show) {
+                document.getElementById('downloadLink').href = downloadUrl;
+                document.getElementById('buildTime').textContent = buildTime;
+                document.getElementById('fileSize').textContent = fileSize;
+            }
+        }
+
+        async function startBuild() {
+            const buildBtn = document.getElementById('buildBtn');
+            const repoUrl = document.getElementById('repoUrl').value.trim();
+            const selectedOS = document.querySelector('input[name="os"]:checked').value;
+            
+            // Validate input
+            const activeTab = document.querySelector('.tab-content.active').id;
+            if (activeTab === 'tab-0' && !repoUrl) {
+                alert('Please enter a GitHub repository URL');
+                return;
+            } else if (activeTab === 'tab-1' && uploadedFiles.length === 0) {
+                alert('Please upload at least one file');
+                return;
+            }
+
+            // Disable build button
+            buildBtn.disabled = true;
+            buildBtn.textContent = '🔄 Building...';
+            
+            // Show status and hide download
+            showStatus(true);
+            showDownload(false);
+            
+            buildStartTime = Date.now();
+            
+            // Simulate build process
+            const buildSteps = [
+                { percent: 10, message: '📥 Processing input...' },
+                { percent: 25, message: '🔍 Analyzing code structure...' },
+                { percent: 40, message: '📦 Installing dependencies...' },
+                { percent: 60, message: '⚙️ Compiling for ' + selectedOS + '...' },
+                { percent: 80, message: '🔐 Running security checks...' },
+                { percent: 95, message: '📋 Packaging executable...' },
+                { percent: 100, message: '✅ Build complete!' }
+            ];
+
+            try {
+                // Prepare build data
+                const buildData = {
+                    type: activeTab === 'tab-0' ? 'github' : 'upload',
+                    url: repoUrl,
+                    files: uploadedFiles,
+                    os: selectedOS,
+                    options: {
+                        includeDeps: document.getElementById('includeDeps').checked,
+                        showConsole: document.getElementById('showConsole').checked,
+                        optimizeSize: document.getElementById('optimizeSize').checked,
+                        obfuscate: document.getElementById('obfuscate').checked
+                    }
+                };
+
+                // Simulate progress
+                for (let step of buildSteps) {
+                    updateProgress(step.percent, step.message);
+                    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+                }
+
+                // Simulate API call (replace with actual endpoint)
+                const response = await fetch('/api/build', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(buildData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    const buildTime = Math.round((Date.now() - buildStartTime) / 1000);
+                    
+                    showDownload(true, result.downloadUrl, buildTime, result.fileSize || '2.3');
+                } else {
+                    throw new Error('Build failed on server');
+                }
+
+            } catch (error) {
+                updateProgress(0, '❌ Build failed: ' + error.message);
+                setTimeout(() => showStatus(false), 3000);
+            }
+
+            // Re-enable build button
+            buildBtn.disabled = false;
+            buildBtn.textContent = '🔨 Build Executable';
+        }
+
+        // Simulate successful build for demo
+        window.demoSuccessfulBuild = function() {
+            startBuild();
+        };
+    </script>
+</body>
+</html>
