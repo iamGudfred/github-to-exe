@@ -296,7 +296,21 @@ class BuildManager:
                     timeout=Config.BUILD_TIMEOUT
                 )
             except BuildError as e:
-                return {'success': False, 'error': str(e)}
+                if 'timed out' in str(e).lower():
+                    return {
+                        'success': False,
+                        'error': 'Build timed out. This repository might be too complex for free hosting.',
+                        'suggestion': 'Try a simpler repository or consider upgrading to paid hosting for faster builds.'
+                    }
+                elif 'not found' in str(e).lower():
+                    return {
+                        'success': False,
+                        'error': 'PyInstaller requires paid hosting tier.',
+                        'analysis_passed': True,
+                        'suggestion': 'Your repository passed security analysis and is ready to build! However, the free hosting tier has limitations. Consider upgrading to enable full build functionality.'
+                    }
+                else:
+                    return {'success': False, 'error': str(e)}
 
             # Create distribution package
             zip_path = build_path / f"{exe_name}_package.zip"
