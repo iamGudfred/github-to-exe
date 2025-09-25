@@ -307,7 +307,7 @@ class BuildManager:
                         'success': False,
                         'error': 'PyInstaller requires paid hosting tier.',
                         'analysis_passed': True,
-                        'suggestion': 'Your repository passed security analysis and is ready to build! However, the free hosting tier has limitations. Consider upgrading to enable full build functionality.'
+                        'suggestion': 'Your repository passed security analysis and is ready to build! However, the free hosting tier has limitations. Help us upgrade to paid hosting ($7/month) by using the Support button above.'
                     }
                 else:
                     return {'success': False, 'error': str(e)}

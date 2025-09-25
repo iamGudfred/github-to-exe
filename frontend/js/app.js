@@ -58,11 +58,11 @@ async function pollBuildStatus(buildId) {
             } else if (status.status === 'failed') {
                 const errorMsg = status.error || status.result?.error || 'Build failed';
                 updateProgress(0, `❌ ${errorMsg}`);
-                setTimeout(() => showStatus(false), 4000);
+                setTimeout(() => showStatus(false), 8000);
                 return false;
             } else if (status.status === 'not_found') {
                 updateProgress(0, '❌ Build not found');
-                setTimeout(() => showStatus(false), 4000);
+                setTimeout(() => showStatus(false), 8000);
                 return false;
             }
 
@@ -82,7 +82,7 @@ async function pollBuildStatus(buildId) {
         } catch (error) {
             console.error('Status polling error:', error);
             updateProgress(0, `❌ Status check failed: ${error.message}`);
-            setTimeout(() => showStatus(false), 4000);
+            setTimeout(() => showStatus(false), 8000);
             return false;
         }
     }
@@ -147,7 +147,7 @@ async function startBuild() {
                     ? 'Security issues: ' + analysis.issues.join('; ')
                     : 'Cannot build this repository');
             updateProgress(0, `❌ ${errorMsg}`);
-            setTimeout(() => showStatus(false), 4000);
+            setTimeout(() => showStatus(false), 8000);
             return;
         }
 
@@ -204,7 +204,7 @@ async function startBuild() {
                 return;
             } else {
                 updateProgress(0, '❌ Build cancelled by user');
-                setTimeout(() => showStatus(false), 3000);
+                setTimeout(() => showStatus(false), 6000);
                 return;
             }
         }
@@ -221,8 +221,15 @@ async function startBuild() {
 
     } catch (error) {
         console.error('Build error:', error);
-        updateProgress(0, `❌ ${error.message}`);
-        setTimeout(() => showStatus(false), 4000);
+
+        // Check if this is a paid tier limitation
+        if (error.message.includes('PyInstaller requires paid hosting')) {
+            updateProgress(0, '❌ Free tier limitation - Repository analysis passed!');
+            showDetailedError('✅ Good news! Your repository passed all security checks and is ready to build.\n\n❌ However, PyInstaller requires paid hosting tier.\n\n💡 Help us upgrade to paid hosting ($7/month) by using the Support button above.');
+        } else {
+            updateProgress(0, `❌ ${error.message}`);
+            setTimeout(() => showStatus(false), 8000); // Extended to 8 seconds
+        }
     } finally {
         buildBtn.disabled = false;
         buildBtn.textContent = 'Build Executable';
@@ -283,6 +290,35 @@ function showDonationInfo() {
 
 function closeDonationModal() {
     const modal = document.getElementById('donationModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function showDetailedError(message) {
+    const errorHTML = `
+        <div class="donation-modal" id="errorModal">
+            <div class="donation-content">
+                <h3>Build Status</h3>
+                <div style="white-space: pre-line; text-align: left; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 8px; margin: 15px 0;">
+                    ${message}
+                </div>
+                <div class="donation-actions">
+                    <button class="donation-btn secondary" onclick="closeErrorModal()">
+                        Got it
+                    </button>
+                    <button class="donation-btn primary" onclick="closeErrorModal(); showDonationInfo()">
+                        Support Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', errorHTML);
+}
+
+function closeErrorModal() {
+    const modal = document.getElementById('errorModal');
     if (modal) {
         modal.remove();
     }
