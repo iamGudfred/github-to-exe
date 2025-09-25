@@ -106,6 +106,8 @@ def start_build():
         return jsonify({'error': 'Missing repository URL'}), 400
 
     repo_url = data['url'].strip()
+    force_build = data.get('force_build', False)  # Allow bypassing security
+
     if not repo_url.startswith('https://github.com/'):
         return jsonify({'error': 'URL must start with https://github.com/'}), 400
 
@@ -119,7 +121,7 @@ def start_build():
     try:
         logger.info(f"Starting build for: {repo_url}")
         build_mgr = BuildManager()
-        result = build_mgr.build_executable(data)
+        result = build_mgr.build_executable(data, force_build=force_build)
 
         build_status[build_id] = {
             'status': 'completed' if result['success'] else 'failed',

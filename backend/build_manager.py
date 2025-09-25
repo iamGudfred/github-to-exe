@@ -236,7 +236,7 @@ class BuildManager:
         """Analyze repository for buildability"""
         return self.analyzer.analyze_repository(repo_url, temp_dir)
 
-    def build_executable(self, build_data: Dict) -> Dict:
+    def build_executable(self, build_data: Dict, force_build: bool = False) -> Dict:
         """
         Build executable from GitHub repository
 
@@ -268,6 +268,19 @@ class BuildManager:
             entry_point = RepositoryAnalyzer.find_entry_point(repo_path, py_files)
             if not entry_point:
                 return {'success': False, 'error': 'No suitable entry point found'}
+
+            # Security check (unless forced)
+            if not force_build:
+                from .security import SecurityScanner
+                security_issues = SecurityScanner.scan_directory(repo_path)
+                if security_issues:
+                    issue_count = sum(len(issues) for issues in security_issues.values())
+                    return {
+                        'success': False,
+                        'error': f'This repository contains {issue_count} potentially risky operations (network requests, file operations, etc.). This could be legitimate code, but building executables from untrusted sources is dangerous.',
+                        'security_warning': True,
+                        'can_force': True
+                    }
 
             # Generate safe executable name
             repo_name = repo_url.rstrip('/').split('/')[-1]

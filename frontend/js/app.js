@@ -171,6 +171,44 @@ async function startBuild() {
         }
 
         const result = await buildRes.json();
+
+        // Handle security warning with user choice
+        if (!result.build_id && result.security_warning) {
+            const userChoice = confirm(
+                `⚠️ SECURITY WARNING\n\n${result.error}\n\n` +
+                `Do you trust this repository and want to build it anyway?\n\n` +
+                `Click OK to continue at your own risk, or Cancel to stop.`
+            );
+
+            if (userChoice) {
+                // Retry with force_build=true
+                updateProgress(15, 'Building with security override...');
+                const forceRes = await fetch('/api/build', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: repoUrl, force_build: true })
+                });
+
+                if (!forceRes.ok) {
+                    throw new Error('Forced build failed');
+                }
+
+                const forceResult = await forceRes.json();
+                if (!forceResult.build_id) {
+                    throw new Error(forceResult.error || 'Forced build failed to start');
+                }
+
+                console.log('Forced build started with ID:', forceResult.build_id);
+                updateProgress(20, 'Build in progress...');
+                await pollBuildStatus(forceResult.build_id);
+                return;
+            } else {
+                updateProgress(0, '❌ Build cancelled by user');
+                setTimeout(() => showStatus(false), 3000);
+                return;
+            }
+        }
+
         if (!result.build_id) {
             throw new Error(result.error || 'Build failed to start');
         }
