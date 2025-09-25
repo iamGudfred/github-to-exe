@@ -247,30 +247,31 @@ function showDonationInfo() {
     const donationHTML = `
         <div class="donation-modal" id="donationModal">
             <div class="donation-content">
-                <h3>💖 Support GitHub-to-EXE Converter</h3>
-                <p>Your support helps maintain and improve this free tool!</p>
+                <h3>Support This Project</h3>
+                <p>Help keep this free tool running and improve build capabilities.</p>
 
                 <div class="donation-options">
                     <div class="donation-method">
-                        <strong>📧 Contact for Donations:</strong>
-                        <p>gprebbiemensah@gmail.com</p>
+                        <strong>Send Bitcoin Tip:</strong>
+                        <p>Visit <a href="https://x.com/iamGudfred" target="_blank">x.com/iamGudfred</a> and use the tip icon</p>
+                        <p class="btc-address">1H1KFHWxAkySDyuSR9hTaVymnzgE5G9yDc</p>
                     </div>
                     <div class="donation-method">
-                        <strong>🌟 Free Support:</strong>
-                        <p>Star the project on GitHub and share with others!</p>
-                    </div>
-                    <div class="donation-method">
-                        <strong>💡 Goal:</strong>
+                        <strong>Goal:</strong>
                         <p>Upgrade to paid hosting ($7/month) for faster, more reliable builds</p>
+                    </div>
+                    <div class="donation-method">
+                        <strong>Free Support:</strong>
+                        <p>Star the repository and share with others who need this tool</p>
                     </div>
                 </div>
 
                 <div class="donation-actions">
-                    <a href="https://github.com/iamGudfred/github-to-exe" target="_blank" class="donation-btn secondary">
-                        ⭐ Star on GitHub
+                    <a href="https://x.com/iamGudfred" target="_blank" class="donation-btn primary">
+                        Visit X Profile
                     </a>
-                    <button class="donation-btn primary" onclick="closeDonationModal()">
-                        ❤️ Got it!
+                    <button class="donation-btn secondary" onclick="closeDonationModal()">
+                        Close
                     </button>
                 </div>
             </div>

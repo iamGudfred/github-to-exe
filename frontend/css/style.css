@@ -48,88 +48,37 @@ body {
     padding: 40px;
 }
 
-/* Support/Donation Section */
-.support-section {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 15px;
-    padding: 25px;
-    margin-top: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.support-content h3 {
-    color: white;
-    font-size: 1.4em;
-    margin-bottom: 10px;
-}
-
-.support-content > p {
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 20px;
-}
-
-.support-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.support-item {
+/* Simple Header Links */
+.header-links {
     display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.support-icon {
-    font-size: 1.8em;
-}
-
-.support-text strong {
-    color: white;
-    display: block;
-    font-size: 1.1em;
-}
-
-.support-text p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9em;
-    margin-top: 4px;
-}
-
-.support-actions {
-    display: flex;
-    gap: 15px;
     justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
 }
 
-.support-btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.header-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-}
-
-.support-btn.primary {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    color: white;
-}
-
-.support-btn.secondary {
+    gap: 6px;
+    padding: 8px 16px;
     background: rgba(255, 255, 255, 0.1);
-    color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.support-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+.header-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.link-icon {
+    font-size: 1em;
 }
 
 /* Donation Modal */
@@ -158,8 +107,18 @@ body {
 
 .donation-content h3 {
     color: white;
-    font-size: 1.6em;
+    font-size: 1.5em;
     margin-bottom: 15px;
+}
+
+.btc-address {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 4px;
+    word-break: break-all;
+    margin-top: 5px;
 }
 
 .donation-content > p {
