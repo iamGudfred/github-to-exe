@@ -9,30 +9,31 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 GitHub-to-EXE</h1>
-            <p>Transform any code into executable files for Windows, Mac, or Linux</p>
+            <h1>GitHub to EXE Converter</h1>
+            <p>Convert Python projects from GitHub repositories into Windows executable files.<br>
+            Enter a repository URL below to generate a ready-to-run application.</p>
             <div class="warning-box">
-                <strong>⚠️ Security Notice:</strong> This tool compiles third-party code. Only use repositories and files you trust. 
-                Always scan downloaded executables with antivirus software before running.
+                <strong>Security Notice:</strong> Only build executables from repositories you trust. Generated files will trigger Windows security warnings as they are unsigned.
             </div>
         </div>
 
         <div class="main-content">
             <!-- Tab Navigation -->
             <div class="tabs">
-                <button class="tab active" onclick="switchTab(0)">📂 GitHub Repository</button>
-                <button class="tab disabled" title="File upload coming in v1.1!">
-                    📎 Upload Files <span class="badge">Soon</span>
+                <button class="tab active" onclick="switchTab(0)">GitHub Repository</button>
+                <button class="tab disabled" title="File upload feature planned for future release">
+                    Upload Files <span class="badge">Coming Soon</span>
                 </button>
             </div>
 
             <!-- Tab 1: GitHub URL -->
             <div class="tab-content active" id="tab-0">
                 <div class="input-section">
-                    <h3>📂 Enter GitHub Repository URL</h3>
-                    <input type="text" class="url-input" id="repoUrl" 
+                    <h3>Repository URL</h3>
+                    <input type="text" class="url-input" id="repoUrl"
                            placeholder="https://github.com/username/repository-name">
-                    <p>Enter the URL of any public GitHub repository containing Python code</p>
+                    <p><strong>Requirements:</strong> Public Python repository with main.py, app.py, or similar entry point<br>
+                    <em>Example: https://github.com/user/python-calculator</em></p>
                 </div>
             </div>
 
@@ -112,7 +113,7 @@
 
             <!-- Build Button -->
             <button class="build-button" onclick="startBuild()" id="buildBtn">
-                🔨 Build Executable
+                Build Executable
             </button>
 
             <!-- Status Section -->
@@ -125,14 +126,15 @@
 
             <!-- Download Section -->
             <div class="download-section" id="downloadSection">
-                <h3>✅ Build Complete!</h3>
-                <p>Your executable has been successfully created and is ready for download.</p>
+                <h3>Build Complete</h3>
+                <p>Your Windows executable has been successfully created and packaged.</p>
                 <a href="#" class="download-button" id="downloadLink">
-                    📦 Download Executable
+                    Download Executable Package
                 </a>
                 <div>
                     <p>Build completed in <span id="buildTime">--</span> seconds</p>
-                    <p>File size: <span id="fileSize">--</span> MB</p>
+                    <p><strong>Instructions:</strong> Extract the ZIP file and run the executable inside</p>
+                    <p><em>Note: Windows may display security warnings for unsigned executables</em></p>
                 </div>
             </div>
         </div>

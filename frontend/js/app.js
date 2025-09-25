@@ -2,31 +2,16 @@ let buildStartTime;
 
 function switchTab(index) {
     if (index === 1) {
-        alert("📁 File upload is coming soon in v1.1!\nFor now, please use the GitHub Repository tab.");
+        alert("File upload functionality is planned for a future release.\nPlease use the GitHub Repository option for now.");
         return;
     }
-    
+
     document.querySelectorAll('.tab').forEach((tab, i) => {
         tab.classList.toggle('active', i === index);
     });
     document.querySelectorAll('.tab-content').forEach((content, i) => {
         content.classList.toggle('active', i === index);
     });
-}
-
-// OS selection is locked to Windows
-function selectOS(element) {
-    const osValue = element.querySelector('input').value;
-    if (osValue !== 'windows') {
-        alert("🖥️ Only Windows builds are supported in this version.\nmacOS and Linux support coming soon!");
-        return;
-    }
-    
-    document.querySelectorAll('.os-option').forEach(opt => {
-        opt.classList.remove('selected');
-    });
-    element.classList.add('selected');
-    element.querySelector('input').checked = true;
 }
 
 function updateProgress(percent, message) {
@@ -44,15 +29,75 @@ function showDownload(show = true, downloadUrl = '', buildTime = 0, fileSize = 0
     if (show) {
         document.getElementById('downloadLink').href = downloadUrl;
         document.getElementById('buildTime').textContent = buildTime;
-        document.getElementById('fileSize').textContent = fileSize;
+        // fileSize element was removed from HTML - skip it
     }
+}
+
+async function pollBuildStatus(buildId) {
+    /**
+     * Poll the build status endpoint until build completes
+     */
+    const maxAttempts = 60; // 5 minutes max (5s intervals)
+    let attempts = 0;
+
+    while (attempts < maxAttempts) {
+        try {
+            const statusRes = await fetch(`/api/status/${buildId}`);
+            if (!statusRes.ok) {
+                throw new Error('Failed to get build status');
+            }
+
+            const status = await statusRes.json();
+            console.log('Build status:', status);
+
+            if (status.status === 'completed') {
+                updateProgress(100, 'Build complete');
+                const buildTime = Math.round((Date.now() - buildStartTime) / 1000);
+                showDownload(true, `/api/download/${buildId}`, buildTime);
+                return true;
+            } else if (status.status === 'failed') {
+                const errorMsg = status.error || status.result?.error || 'Build failed';
+                updateProgress(0, `❌ ${errorMsg}`);
+                setTimeout(() => showStatus(false), 4000);
+                return false;
+            } else if (status.status === 'not_found') {
+                updateProgress(0, '❌ Build not found');
+                setTimeout(() => showStatus(false), 4000);
+                return false;
+            }
+
+            // Still building - update progress
+            const elapsed = (Date.now() - buildStartTime) / 1000;
+            if (elapsed < 30) {
+                updateProgress(20, 'Cloning repository...');
+            } else if (elapsed < 120) {
+                updateProgress(50, 'Building executable...');
+            } else {
+                updateProgress(80, 'Packaging application...');
+            }
+
+            attempts++;
+            await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds
+
+        } catch (error) {
+            console.error('Status polling error:', error);
+            updateProgress(0, `❌ Status check failed: ${error.message}`);
+            setTimeout(() => showStatus(false), 4000);
+            return false;
+        }
+    }
+
+    // Timeout
+    updateProgress(0, '❌ Build timed out (5 minutes)');
+    setTimeout(() => showStatus(false), 4000);
+    return false;
 }
 
 async function startBuild() {
     const buildBtn = document.getElementById('buildBtn');
     let repoUrl = document.getElementById('repoUrl').value.trim();
-    
-    // ✅ CLEAN URL: Remove query parameters and fragments
+
+    // Clean URL: Remove query parameters and fragments
     if (repoUrl.includes('?')) {
         repoUrl = repoUrl.split('?')[0];
     }
@@ -60,13 +105,12 @@ async function startBuild() {
         repoUrl = repoUrl.split('#')[0];
     }
     repoUrl = repoUrl.replace(/\/+$/, ''); // Remove trailing slashes
-    
+
     if (!repoUrl) {
         alert('Please enter a GitHub repository URL');
         return;
     }
 
-    // ✅ FIXED VALIDATION: No trailing spaces!
     if (!repoUrl.startsWith('https://github.com/')) {
         alert('Please enter a valid GitHub URL (must start with https://github.com/)');
         return;
@@ -79,19 +123,18 @@ async function startBuild() {
     buildStartTime = Date.now();
 
     try {
-        // Step 1: Analyze repo
-        updateProgress(10, '🔍 Analyzing repository...');
+        // Step 1: Analyze repository
+        updateProgress(10, 'Analyzing repository...');
         const analyzeRes = await fetch('/api/analyze', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ url: repoUrl })
         });
 
-        // ✅ Handle non-JSON responses (like HTML error pages)
         if (!analyzeRes.ok) {
             throw new Error('Repository analysis failed');
         }
-        
+
         const contentType = analyzeRes.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             throw new Error('Invalid response from server (not JSON)');
@@ -99,8 +142,8 @@ async function startBuild() {
 
         const analysis = await analyzeRes.json();
         if (!analysis.can_build) {
-            const errorMsg = analysis.error || 
-                (analysis.issues && analysis.issues.length > 0 
+            const errorMsg = analysis.error ||
+                (analysis.issues && analysis.issues.length > 0
                     ? 'Security issues: ' + analysis.issues.join('; ')
                     : 'Cannot build this repository');
             updateProgress(0, `❌ ${errorMsg}`);
@@ -108,8 +151,8 @@ async function startBuild() {
             return;
         }
 
-        // Step 2: Build
-        updateProgress(30, '📥 Cloning repository...');
+        // Step 2: Start build
+        updateProgress(15, 'Starting build process...');
         const buildRes = await fetch('/api/build', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -117,37 +160,35 @@ async function startBuild() {
         });
 
         if (!buildRes.ok) {
-            throw new Error('Build request failed');
+            const errorText = await buildRes.text();
+            throw new Error(`Build request failed: ${buildRes.status} ${errorText}`);
         }
-        
+
         const buildContentType = buildRes.headers.get('content-type');
         if (!buildContentType || !buildContentType.includes('application/json')) {
-            throw new Error('Invalid build response (not JSON)');
+            const responseText = await buildRes.text();
+            throw new Error(`Invalid build response: ${responseText}`);
         }
 
         const result = await buildRes.json();
         if (!result.build_id) {
-            throw new Error(result.error || 'Build failed');
+            throw new Error(result.error || 'Build failed to start');
         }
 
-        // Simulate remaining progress
-        updateProgress(60, '⚙️ Compiling executable...');
-        await new Promise(r => setTimeout(r, 2000));
-        updateProgress(90, '📋 Packaging...');
-        await new Promise(r => setTimeout(r, 1000));
+        console.log('Build started with ID:', result.build_id);
 
-        updateProgress(100, '✅ Build complete!');
-        const buildTime = Math.round((Date.now() - buildStartTime) / 1000);
-        showDownload(true, `/api/download/${result.build_id}`, buildTime, '2.3');
+        // Step 3: Poll for completion
+        updateProgress(20, 'Build in progress...');
+        await pollBuildStatus(result.build_id);
 
     } catch (error) {
         console.error('Build error:', error);
         updateProgress(0, `❌ ${error.message}`);
         setTimeout(() => showStatus(false), 4000);
+    } finally {
+        buildBtn.disabled = false;
+        buildBtn.textContent = 'Build Executable';
     }
-
-    buildBtn.disabled = false;
-    buildBtn.textContent = '🔨 Build Executable';
 }
 
 // Enter key support
