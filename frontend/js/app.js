@@ -323,3 +323,62 @@ function closeErrorModal() {
         modal.remove();
     }
 }
+
+// About/Story modal function
+function showAboutStory() {
+    const aboutHTML = `
+        <div class="donation-modal" id="aboutModal">
+            <div class="donation-content" style="max-width: 650px; max-height: 90vh; overflow-y: auto;">
+                <h3>Why We Built This Tool</h3>
+
+                <div class="story-section">
+                    <h4>The Problem</h4>
+                    <p>Millions of non-technical users find amazing Python projects on GitHub but feel frustrated. They see useful calculators, games, and tools but can't run them without installing Python, managing dependencies, or using command lines.</p>
+                    <p>A viral tweet captured this perfectly: "Why can't I just download and run this? I don't want to become a developer just to use a calculator!"</p>
+                </div>
+
+                <div class="story-section">
+                    <h4>Our Mission</h4>
+                    <p>Bridge the gap between developers and everyday users. We believe useful software should be accessible to everyone, regardless of technical knowledge.</p>
+                    <p>This tool converts Python repositories into ready-to-run Windows executables with just a URL paste and click.</p>
+                </div>
+
+                <div class="story-section">
+                    <h4>Open Source Vision</h4>
+                    <p><strong>Current:</strong> Python to Windows .exe files</p>
+                    <p><strong>Roadmap:</strong> We're making this open source so global developers can expand it to support:</p>
+                    <ul style="text-align: left; margin: 10px 0;">
+                        <li>macOS applications (.app files)</li>
+                        <li>Linux executables</li>
+                        <li>JavaScript/Node.js projects</li>
+                        <li>Go, Rust, and other languages</li>
+                        <li>Mobile app generation</li>
+                    </ul>
+                </div>
+
+                <div class="story-section">
+                    <h4>Built by Frustrated Users, For Frustrated Users</h4>
+                    <p>Created by <strong>Godfred Prebbie Mensah</strong>, a lifelong learner who experienced the same frustration. This is our contribution to making software more accessible.</p>
+                    <p>Every star, share, and donation helps us grow this into a global solution.</p>
+                </div>
+
+                <div class="donation-actions">
+                    <button class="donation-btn secondary" onclick="closeAboutModal()">
+                        Got it!
+                    </button>
+                    <button class="donation-btn primary" onclick="closeAboutModal(); showDonationInfo()">
+                        Support the Vision
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', aboutHTML);
+}
+
+function closeAboutModal() {
+    const modal = document.getElementById('aboutModal');
+    if (modal) {
+        modal.remove();
+    }
+}
