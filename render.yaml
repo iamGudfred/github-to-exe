@@ -2,7 +2,7 @@ services:
   - type: web
     name: github-to-exe
     runtime: python3
-    buildCommand: pip install -r backend/requirements.txt && pip install pyinstaller
+    buildCommand: apt-get update && apt-get install -y python3-dev build-essential && pip install -r backend/requirements.txt && pip install pyinstaller
     startCommand: python server.py
     plan: free
     envVars:
