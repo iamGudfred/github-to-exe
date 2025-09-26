@@ -293,9 +293,9 @@ function showDonationInfo() {
                         <span>Buy Me a Coffee</span>
                     </a>
 
-                    <div class="payment-option" onclick="processPayment('paypal')">
+                    <div class="payment-option disabled-payment" title="PayPal business account unavailable in Ghana - Working on alternative setup">
                         <div class="payment-icon"><i class="fab fa-paypal"></i></div>
-                        <span>PayPal</span>
+                        <span>PayPal <small>(Coming Soon)</small></span>
                     </div>
 
                     <div class="payment-option disabled-payment" title="Stripe not available in Ghana - Working on U.S. entity setup">
