@@ -164,6 +164,8 @@ def create_paystack_payment(amount=50.00, currency='GHS', email='donor@example.c
             data = response.json()
             return {'success': True, 'authorization_url': data['data']['authorization_url']}
         else:
-            return {'success': False, 'error': response.text}
+            # Better error logging for debugging
+            error_msg = f"Paystack API Error {response.status_code}: {response.text}"
+            return {'success': False, 'error': error_msg}
     except Exception as e:
         return {'success': False, 'error': str(e)}
