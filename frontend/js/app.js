@@ -288,9 +288,9 @@ function showDonationInfo() {
                         <span>PayPal</span>
                     </div>
 
-                    <div class="payment-option" onclick="processPayment('stripe')">
+                    <div class="payment-option disabled-payment" title="Stripe not available in Ghana - Working on U.S. entity setup">
                         <div class="payment-icon"><i class="fab fa-stripe"></i></div>
-                        <span>Stripe</span>
+                        <span>Stripe <small>(Coming Soon)</small></span>
                     </div>
 
                     <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
@@ -421,7 +421,7 @@ function showAboutStory() {
 
                     <p>So I built this.</p>
 
-                    <p>My name's Godfred, I'm from Ghana, and I'm a self-taught programmer. I've been in those shoes - wanting to use software but getting lost in technical setup. This tool solves that. Paste a GitHub URL, get a Windows executable. Simple.</p>
+                    <p>I’m Godfred, a passionate lifelong learner from Ghana. I've been in those shoes - wanting to use software but getting lost in technical setup. This tool solves that. Paste a GitHub URL, get a Windows executable. Simple.</p>
 
                     <p>Right now it works for Python projects, but here's where it gets exciting: <strong>this is going open source.</strong></p>
 

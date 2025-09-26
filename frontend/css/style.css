@@ -208,6 +208,29 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
+.payment-option.disabled-payment {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.payment-option.disabled-payment:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: none;
+    box-shadow: none;
+}
+
+.payment-option.disabled-payment:hover .payment-icon i {
+    color: inherit;
+}
+
+.payment-option.disabled-payment span small {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
 
 .donation-goal {
     background: rgba(255, 255, 255, 0.08);
