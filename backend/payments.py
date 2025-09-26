@@ -19,6 +19,10 @@ paypalrestsdk.configure({
 
 def create_stripe_payment(amount=7.00, currency='usd'):
     """Create Stripe payment session"""
+    # Check if Stripe is configured
+    if not os.getenv('STRIPE_SECRET_KEY'):
+        return {'success': False, 'error': 'Stripe not configured. Please set STRIPE_SECRET_KEY environment variable.'}
+
     try:
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -43,6 +47,10 @@ def create_stripe_payment(amount=7.00, currency='usd'):
 
 def create_paypal_payment(amount=7.00, currency='USD'):
     """Create PayPal payment"""
+    # Check if PayPal is configured
+    if not os.getenv('PAYPAL_CLIENT_ID') or not os.getenv('PAYPAL_CLIENT_SECRET'):
+        return {'success': False, 'error': 'PayPal not configured. Please set PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET environment variables.'}
+
     try:
         payment = paypalrestsdk.Payment({
             "intent": "sale",

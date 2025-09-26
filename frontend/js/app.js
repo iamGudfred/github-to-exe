@@ -259,7 +259,7 @@ function showDonationInfo() {
 
                 <div class="payment-methods">
                     <a href="https://x.com/iamGudfred" target="_blank" class="payment-option">
-                        <div class="payment-icon"><i class="fab fa-x-twitter"></i></div>
+                        <div class="payment-icon"><i class="fab fa-twitter"></i></div>
                         <span>X (Twitter) Tips</span>
                     </a>
 
@@ -446,11 +446,12 @@ async function processPayment(method) {
             })
         });
 
-        if (!response.ok) {
-            throw new Error(`Payment setup failed: ${response.status}`);
-        }
-
         const data = await response.json();
+
+        if (!response.ok) {
+            // Show specific error from server
+            throw new Error(data.error || `Payment setup failed: ${response.status}`);
+        }
 
         if (method === 'stripe' && data.checkout_url) {
             window.open(data.checkout_url, '_blank');
@@ -459,11 +460,19 @@ async function processPayment(method) {
         } else if (method === 'paystack' && data.authorization_url) {
             window.open(data.authorization_url, '_blank');
         } else {
-            throw new Error('Payment URL not received');
+            throw new Error('Payment URL not received from server');
         }
 
     } catch (error) {
         console.error('Payment error:', error);
-        alert('Payment setup failed. Please try again or use an alternative method.');
+
+        let errorMessage = 'Payment setup failed. ';
+        if (error.message.includes('not configured')) {
+            errorMessage += 'Payment gateway is not configured yet. Please try Buy Me a Coffee or Bitcoin instead.';
+        } else {
+            errorMessage += 'Please try again or use an alternative method.';
+        }
+
+        alert(errorMessage);
     }
 }
