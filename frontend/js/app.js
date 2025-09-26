@@ -273,10 +273,20 @@ function showDonationInfo() {
                 </div>
 
                 <div class="payment-methods">
+                    <div class="payment-option" onclick="processPayment('paystack')">
+                        <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+                        <span>Cards & MoMo</span>
+                    </div>
+
                     <a href="https://x.com/iamGudfred" target="_blank" class="payment-option">
                         <div class="payment-icon"><i class="fab fa-twitter"></i></div>
                         <span>X (Twitter) Tips</span>
                     </a>
+
+                    <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
+                        <div class="payment-icon"><i class="fab fa-bitcoin"></i></div>
+                        <span>Bitcoin</span>
+                    </div>
 
                     <a href="https://buymeacoffee.com/gudfred" target="_blank" class="payment-option">
                         <div class="payment-icon"><i class="fas fa-coffee"></i></div>
@@ -291,16 +301,6 @@ function showDonationInfo() {
                     <div class="payment-option disabled-payment" title="Stripe not available in Ghana - Working on U.S. entity setup">
                         <div class="payment-icon"><i class="fab fa-stripe"></i></div>
                         <span>Stripe <small>(Coming Soon)</small></span>
-                    </div>
-
-                    <div class="payment-option" onclick="processPayment('paystack')">
-                        <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
-                        <span>Cards & MoMo</span>
-                    </div>
-
-                    <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
-                        <div class="payment-icon"><i class="fab fa-bitcoin"></i></div>
-                        <span>Bitcoin</span>
                     </div>
                 </div>
 
