@@ -71,7 +71,27 @@ build_status = {}
 
 @app.route('/')
 def index():
-    return send_file("../frontend/index.html")
+    # Read HTML file and inject GA tracking ID
+    import os
+    ga_id = os.environ.get('GOOGLE_ANALYTICS_ID', '')
+
+    try:
+        with open("../frontend/index.html", 'r', encoding='utf-8') as f:
+            html_content = f.read()
+
+        # Replace placeholder with actual GA ID
+        if ga_id:
+            html_content = html_content.replace('{{GOOGLE_ANALYTICS_ID}}', ga_id)
+        else:
+            # Remove GA tracking if no ID provided
+            import re
+            html_content = re.sub(r'<!-- Google tag.*?</script>', '', html_content, flags=re.DOTALL)
+
+        from flask import Response
+        return Response(html_content, mimetype='text/html')
+    except:
+        # Fallback to direct file serving
+        return send_file("../frontend/index.html")
 
 # Serve static files explicitly for better compatibility
 @app.route('/css/<path:filename>')
