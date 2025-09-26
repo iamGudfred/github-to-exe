@@ -259,27 +259,27 @@ function showDonationInfo() {
 
                 <div class="payment-methods">
                     <a href="https://x.com/iamGudfred" target="_blank" class="payment-option">
-                        <div class="payment-icon">𝕏</div>
+                        <div class="payment-icon"><i class="fab fa-x-twitter"></i></div>
                         <span>X (Twitter) Tips</span>
                     </a>
 
                     <a href="https://buymeacoffee.com/gudfred" target="_blank" class="payment-option">
-                        <div class="payment-icon">☕</div>
+                        <div class="payment-icon"><i class="fas fa-coffee"></i></div>
                         <span>Buy Me a Coffee</span>
                     </a>
 
                     <a href="mailto:gprebbiemensah@gmail.com?subject=PayPal Donation&body=Hi! I'd like to support the GitHub-to-EXE project via PayPal." target="_blank" class="payment-option">
-                        <div class="payment-icon">💳</div>
+                        <div class="payment-icon"><i class="fab fa-paypal"></i></div>
                         <span>PayPal</span>
                     </a>
 
                     <a href="mailto:gprebbiemensah@gmail.com?subject=Stripe Donation&body=Hi! I'd like to support the GitHub-to-EXE project via Stripe." target="_blank" class="payment-option">
-                        <div class="payment-icon">💰</div>
+                        <div class="payment-icon"><i class="fab fa-stripe"></i></div>
                         <span>Stripe</span>
                     </a>
 
                     <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
-                        <div class="payment-icon">₿</div>
+                        <div class="payment-icon"><i class="fab fa-bitcoin"></i></div>
                         <span>Bitcoin</span>
                     </div>
                 </div>

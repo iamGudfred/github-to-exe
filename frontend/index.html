@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub-to-EXE - Convert Code to Executables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,15 +19,15 @@
             <!-- Simple Support Links -->
             <div class="header-links">
                 <a href="https://github.com/iamGudfred/github-to-exe" target="_blank" class="header-link">
-                    <span class="link-icon">⭐</span>
+                    <i class="fab fa-github"></i>
                     GitHub
                 </a>
                 <button class="header-link" onclick="showAboutStory()">
-                    <span class="link-icon">🌟</span>
+                    <i class="fas fa-info-circle"></i>
                     Our Story
                 </button>
                 <button class="header-link" onclick="showDonationInfo()">
-                    <span class="link-icon">❤️</span>
+                    <i class="fas fa-heart"></i>
                     Support
                 </button>
             </div>
@@ -55,9 +56,9 @@
             <!-- Tab 2: File Upload (DISABLED) -->
             <div class="tab-content disabled" id="tab-1">
                 <div class="input-section">
-                    <h3>📎 Upload Your Source Files</h3>
+                    <h3><i class="fas fa-paperclip"></i> Upload Your Source Files</h3>
                     <div class="feature-disabled">
-                        <div class="disabled-icon">🔒</div>
+                        <div class="disabled-icon"><i class="fas fa-lock"></i></div>
                         <h4>File Upload — Coming Soon!</h4>
                         <p>Support for direct file uploads will be available in v1.1.<br>
                            For now, please use a GitHub repository.</p>
@@ -71,21 +72,21 @@
                 <div class="os-selection">
                     <label class="os-option selected">
                         <input type="radio" name="os" value="windows" checked>
-                        <div class="os-icon">🖥️</div>
+                        <div class="os-icon"><i class="fab fa-windows"></i></div>
                         <div class="os-info">
                             <h3>Windows</h3>
                             <p>Generate .exe executable</p>
                         </div>
                     </label>
                     <label class="os-option disabled">
-                        <div class="os-icon">🍎</div>
+                        <div class="os-icon"><i class="fab fa-apple"></i></div>
                         <div class="os-info">
                             <h3>macOS <span class="badge">Beta</span></h3>
                             <p>Coming soon — requires Apple hardware</p>
                         </div>
                     </label>
                     <label class="os-option disabled">
-                        <div class="os-icon">🐧</div>
+                        <div class="os-icon"><i class="fab fa-linux"></i></div>
                         <div class="os-info">
                             <h3>Linux <span class="badge">Beta</span></h3>
                             <p>Coming soon — requires Linux server</p>

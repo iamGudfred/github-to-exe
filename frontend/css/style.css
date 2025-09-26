@@ -77,8 +77,9 @@ body {
     transform: translateY(-1px);
 }
 
-.link-icon {
+.header-link i {
     font-size: 1em;
+    margin-right: 6px;
 }
 
 /* Donation Modal */
@@ -186,13 +187,17 @@ body {
     line-height: 1;
 }
 
+.payment-icon i {
+    color: inherit;
+}
+
 .payment-option span {
     font-size: 0.9em;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
 }
 
-.bitcoin-option:hover .payment-icon {
+.bitcoin-option:hover .payment-icon i {
     color: #f7931a; /* Bitcoin orange */
 }
 
