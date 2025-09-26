@@ -20,6 +20,7 @@ from flask import Flask, request, jsonify, send_file
 
 from .build_manager import BuildManager, check_dependencies
 from .config import Config
+from .payments import create_stripe_payment, create_paypal_payment, create_paystack_payment
 
 # Setup logging
 logging.basicConfig(
@@ -153,6 +154,63 @@ def download_build(build_id):
         return jsonify({'error': 'File missing'}), 404
     
     return send_file(file_path, as_attachment=True, download_name=result.get('filename'))
+
+@app.route('/api/payment/stripe', methods=['POST'])
+def create_stripe_checkout():
+    """Create Stripe payment session"""
+    data = request.get_json()
+    amount = data.get('amount', 7.00)  # Default $7
+
+    result = create_stripe_payment(amount)
+    if result['success']:
+        return jsonify({'checkout_url': result['checkout_url']})
+    else:
+        return jsonify({'error': result['error']}), 500
+
+@app.route('/api/payment/paypal', methods=['POST'])
+def create_paypal_checkout():
+    """Create PayPal payment"""
+    data = request.get_json()
+    amount = data.get('amount', 7.00)  # Default $7
+
+    result = create_paypal_payment(amount)
+    if result['success']:
+        return jsonify({'approval_url': result['approval_url']})
+    else:
+        return jsonify({'error': result['error']}), 500
+
+@app.route('/api/payment/paystack', methods=['POST'])
+def create_paystack_checkout():
+    """Create Paystack payment for Mobile Money"""
+    data = request.get_json()
+    amount = data.get('amount', 50.00)  # Default 50 GHS
+    email = data.get('email', 'donor@example.com')
+
+    result = create_paystack_payment(amount, 'GHS', email)
+    if result['success']:
+        return jsonify({'authorization_url': result['authorization_url']})
+    else:
+        return jsonify({'error': result['error']}), 500
+
+@app.route('/success')
+def payment_success():
+    return """
+    <html><body style="font-family: Arial; text-align: center; padding: 50px;">
+        <h2>✅ Thank you for your support!</h2>
+        <p>Your donation will help us upgrade to better hosting for faster builds.</p>
+        <a href="/" style="color: #667eea; text-decoration: none;">← Back to GitHub-to-EXE Converter</a>
+    </body></html>
+    """
+
+@app.route('/cancel')
+def payment_cancel():
+    return """
+    <html><body style="font-family: Arial; text-align: center; padding: 50px;">
+        <h2>Payment Cancelled</h2>
+        <p>No worries! You can still support us by starring the project on GitHub.</p>
+        <a href="/" style="color: #667eea; text-decoration: none;">← Back to GitHub-to-EXE Converter</a>
+    </body></html>
+    """
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5001)

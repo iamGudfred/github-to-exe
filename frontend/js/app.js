@@ -268,15 +268,15 @@ function showDonationInfo() {
                         <span>Buy Me a Coffee</span>
                     </a>
 
-                    <a href="mailto:gprebbiemensah@gmail.com?subject=PayPal Donation&body=Hi! I'd like to support the GitHub-to-EXE project via PayPal." target="_blank" class="payment-option">
+                    <div class="payment-option" onclick="processPayment('paypal')">
                         <div class="payment-icon"><i class="fab fa-paypal"></i></div>
                         <span>PayPal</span>
-                    </a>
+                    </div>
 
-                    <a href="mailto:gprebbiemensah@gmail.com?subject=Stripe Donation&body=Hi! I'd like to support the GitHub-to-EXE project via Stripe." target="_blank" class="payment-option">
+                    <div class="payment-option" onclick="processPayment('stripe')">
                         <div class="payment-icon"><i class="fab fa-stripe"></i></div>
                         <span>Stripe</span>
-                    </a>
+                    </div>
 
                     <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
                         <div class="payment-icon"><i class="fab fa-bitcoin"></i></div>
@@ -428,5 +428,43 @@ function closeAboutModal() {
     const modal = document.getElementById('aboutModal');
     if (modal) {
         modal.remove();
+    }
+}
+
+// Payment processing function
+async function processPayment(method) {
+    try {
+        closeDonationModal(); // Close current modal
+
+        const response = await fetch(`/api/payment/${method}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: 7.00,
+                email: 'donor@example.com' // For Paystack, you might want to ask for email
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Payment setup failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (method === 'stripe' && data.checkout_url) {
+            window.open(data.checkout_url, '_blank');
+        } else if (method === 'paypal' && data.approval_url) {
+            window.open(data.approval_url, '_blank');
+        } else if (method === 'paystack' && data.authorization_url) {
+            window.open(data.authorization_url, '_blank');
+        } else {
+            throw new Error('Payment URL not received');
+        }
+
+    } catch (error) {
+        console.error('Payment error:', error);
+        alert('Payment setup failed. Please try again or use an alternative method.');
     }
 }
