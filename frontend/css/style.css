@@ -769,20 +769,44 @@ input:checked + .slider:before {
     color: #FFC107;
 }
 
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 40px;
+}
+
+footer p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin: 0;
+    font-style: italic;
+}
+
 @media (max-width: 768px) {
     .header h1 {
         font-size: 2em;
     }
-    
+
     .main-content {
         padding: 20px;
     }
-    
+
     .os-selection {
         grid-template-columns: 1fr;
     }
-    
+
     .build-options {
         grid-template-columns: 1fr;
+    }
+
+    footer {
+        padding: 15px;
+    }
+
+    footer p {
+        font-size: 12px;
     }
 }
