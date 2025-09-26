@@ -130,6 +130,15 @@ def create_paypal_payment(amount=7.00, currency='USD'):
 
 def create_paystack_payment(amount=50.00, currency='GHS', email='donor@example.com'):
     """Create Paystack payment for Mobile Money (Ghana)"""
+    # Validate amount first
+    validated_amount, error = validate_payment_amount(amount)
+    if error:
+        return {'success': False, 'error': error}
+
+    # Check if Paystack is configured
+    if not os.getenv('PAYSTACK_SECRET_KEY'):
+        return {'success': False, 'error': 'Paystack not configured. Please set PAYSTACK_SECRET_KEY environment variable.'}
+
     try:
         import requests
 
@@ -140,7 +149,7 @@ def create_paystack_payment(amount=50.00, currency='GHS', email='donor@example.c
 
         data = {
             'email': email,
-            'amount': int(amount * 100),  # Amount in pesewas
+            'amount': int(validated_amount * 100),  # Amount in pesewas
             'currency': currency,
             'callback_url': (request.host_url if request else "http://localhost:5000/") + 'success',
             'metadata': {
