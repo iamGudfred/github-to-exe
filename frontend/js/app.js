@@ -368,36 +368,35 @@ function showAboutStory() {
     const aboutHTML = `
         <div class="donation-modal" id="aboutModal">
             <div class="donation-content" style="max-width: 650px; max-height: 90vh; overflow-y: auto;">
-                <h3>Why We Built This Tool</h3>
+                <h3>Our Story</h3>
 
-                <div class="story-section">
-                    <h4>The Problem</h4>
-                    <p>Every day, millions of people—non-tech enthusiasts included—stumble upon amazing projects on GitHub: calculators, games, tools, and more. But they hit a wall. Complex setups, command lines, and software dependencies leave them frustrated, unable to enjoy what they find.</p>
-                    <p>A tweet summed it up perfectly: "Why can't I just download and run this?"</p>
-                </div>
+                <div class="story-text">
+                    <p>I was browsing GitHub one evening when I found this amazing Python calculator. Simple, clean, exactly what I needed. But then I hit that familiar wall: "Clone the repository, install Python, pip install requirements, python main.py..." </p>
 
-                <div class="story-section">
-                    <h4>Our Journey</h4>
-                    <p>This tool was born from that frustration. As Godfred Prebbie Mensah, a self-taught learner from Ghana, I felt the same struggle. I wanted to create a simple solution to turn any GitHub project into a ready-to-run file with a single click.</p>
-                    <p>It started with Python, but the dream is bigger.</p>
-                </div>
+                    <p>I just wanted to <em>use</em> the damn thing.</p>
 
-                <div class="story-section">
-                    <h4>Our Vision</h4>
-                    <p>We're making software accessible to everyone, no matter their tech skills. This is just the beginning. We're opening this project to the world, inviting global engineers and developers to collaborate.</p>
-                    <p><strong>Our roadmap includes:</strong></p>
-                    <ul style="text-align: left; margin: 10px 0;">
-                        <li>Support for macOS (.app files) and Linux executables</li>
-                        <li>Converting projects in JavaScript, Go, Rust, and more into executables</li>
-                        <li>Eventually, mobile app generation for wider reach</li>
-                    </ul>
-                    <p>This will be open source, empowering a global community to expand and improve it.</p>
-                </div>
+                    <p>That's when it hit me. Millions of people discover incredible projects on GitHub every day. Useful tools, fun games, helpful utilities. But most never get to actually use them because they're not developers.</p>
 
-                <div class="story-section">
-                    <h4>Join the Movement</h4>
-                    <p>Every star on GitHub, share, or donation brings us closer to this vision. Together, we can make software accessible to everyone, everywhere.</p>
-                    <p>From Ghana to the world—let's build something amazing.</p>
+                    <p>So I built this.</p>
+
+                    <p>My name's Godfred, I'm from Ghana, and I'm a self-taught programmer. I've been in those shoes - wanting to use software but getting lost in technical setup. This tool solves that. Paste a GitHub URL, get a Windows executable. Simple.</p>
+
+                    <p>Right now it works for Python projects, but here's where it gets exciting: <strong>this is going open source.</strong></p>
+
+                    <p>I want developers from around the world to help expand this. Imagine if we could do this for any language:</p>
+
+                    <div class="vision-list">
+                        • JavaScript projects → Desktop apps<br>
+                        • Go programs → Cross-platform executables<br>
+                        • Rust code → Optimized binaries<br>
+                        • Eventually: Web apps → Mobile apps
+                    </div>
+
+                    <p>We could bridge the gap between developers and users everywhere. Make software truly accessible.</p>
+
+                    <p>Your support helps keep this running and proves there's demand for this vision. Whether you star the repo, share it, or contribute financially, you're part of making software more human.</p>
+
+                    <p><strong>From Ghana to the world. Let's build something that matters.</strong></p>
                 </div>
 
                 <div class="donation-actions">
