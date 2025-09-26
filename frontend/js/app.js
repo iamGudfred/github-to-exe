@@ -352,33 +352,32 @@ function showAboutStory() {
 
                 <div class="story-section">
                     <h4>The Problem</h4>
-                    <p>Millions of non-technical users find amazing Python projects on GitHub but feel frustrated. They see useful calculators, games, and tools but can't run them without installing Python, managing dependencies, or using command lines.</p>
-                    <p>A viral tweet captured this perfectly: "Why can't I just download and run this? I don't want to become a developer just to use a calculator!"</p>
+                    <p>Every day, millions of people—non-tech enthusiasts included—stumble upon amazing projects on GitHub: calculators, games, tools, and more. But they hit a wall. Complex setups, command lines, and software dependencies leave them frustrated, unable to enjoy what they find.</p>
+                    <p>A tweet summed it up perfectly: "Why can't I just download and run this?"</p>
                 </div>
 
                 <div class="story-section">
-                    <h4>Our Mission</h4>
-                    <p>Bridge the gap between developers and everyday users. We believe useful software should be accessible to everyone, regardless of technical knowledge.</p>
-                    <p>This tool converts Python repositories into ready-to-run Windows executables with just a URL paste and click.</p>
+                    <h4>Our Journey</h4>
+                    <p>This tool was born from that frustration. As Godfred Prebbie Mensah, a self-taught learner from Ghana, I felt the same struggle. I wanted to create a simple solution to turn any GitHub project into a ready-to-run file with a single click.</p>
+                    <p>It started with Python, but the dream is bigger.</p>
                 </div>
 
                 <div class="story-section">
-                    <h4>Open Source Vision</h4>
-                    <p><strong>Current:</strong> Python to Windows .exe files</p>
-                    <p><strong>Roadmap:</strong> We're making this open source so global developers can expand it to support:</p>
+                    <h4>Our Vision</h4>
+                    <p>We're making software accessible to everyone, no matter their tech skills. This is just the beginning. We're opening this project to the world, inviting global engineers and developers to collaborate.</p>
+                    <p><strong>Our roadmap includes:</strong></p>
                     <ul style="text-align: left; margin: 10px 0;">
-                        <li>macOS applications (.app files)</li>
-                        <li>Linux executables</li>
-                        <li>JavaScript/Node.js projects</li>
-                        <li>Go, Rust, and other languages</li>
-                        <li>Mobile app generation</li>
+                        <li>Support for macOS (.app files) and Linux executables</li>
+                        <li>Converting projects in JavaScript, Go, Rust, and more into executables</li>
+                        <li>Eventually, mobile app generation for wider reach</li>
                     </ul>
+                    <p>This will be open source, empowering a global community to expand and improve it.</p>
                 </div>
 
                 <div class="story-section">
-                    <h4>Built by Frustrated Users, For Frustrated Users</h4>
-                    <p>Created by <strong>Godfred Prebbie Mensah</strong>, a lifelong learner who experienced the same frustration. This is our contribution to making software more accessible.</p>
-                    <p>Every star, share, and donation helps us grow this into a global solution.</p>
+                    <h4>Join the Movement</h4>
+                    <p>Every star on GitHub, share, or donation brings us closer to this vision. Together, we can make software accessible to everyone, everywhere.</p>
+                    <p>From Ghana to the world—let's build something amazing.</p>
                 </div>
 
                 <div class="donation-actions">
