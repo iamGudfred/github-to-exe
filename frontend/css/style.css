@@ -150,6 +150,66 @@ body {
     margin: 0;
 }
 
+/* Payment Methods Grid */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.payment-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.payment-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.payment-icon {
+    font-size: 2.5em;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.payment-option span {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.bitcoin-option:hover .payment-icon {
+    color: #f7931a; /* Bitcoin orange */
+}
+
+.donation-goal {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.donation-goal p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95em;
+}
+
 .donation-actions {
     display: flex;
     gap: 15px;

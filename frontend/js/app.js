@@ -255,28 +255,40 @@ function showDonationInfo() {
         <div class="donation-modal" id="donationModal">
             <div class="donation-content">
                 <h3>Support This Project</h3>
-                <p>Help keep this free tool running and improve build capabilities.</p>
+                <p>Choose your preferred way to help keep this tool free and improve build capabilities.</p>
 
-                <div class="donation-options">
-                    <div class="donation-method">
-                        <strong>Send Bitcoin Tip:</strong>
-                        <p>Visit <a href="https://x.com/iamGudfred" target="_blank">x.com/iamGudfred</a> and use the tip icon</p>
-                        <p class="btc-address">1H1KFHWxAkySDyuSR9hTaVymnzgE5G9yDc</p>
-                    </div>
-                    <div class="donation-method">
-                        <strong>Goal:</strong>
-                        <p>Upgrade to paid hosting ($7/month) for faster, more reliable builds</p>
-                    </div>
-                    <div class="donation-method">
-                        <strong>Free Support:</strong>
-                        <p>Star the repository and share with others who need this tool</p>
+                <div class="payment-methods">
+                    <a href="https://x.com/iamGudfred" target="_blank" class="payment-option">
+                        <div class="payment-icon">𝕏</div>
+                        <span>X (Twitter) Tips</span>
+                    </a>
+
+                    <a href="https://buymeacoffee.com/gudfred" target="_blank" class="payment-option">
+                        <div class="payment-icon">☕</div>
+                        <span>Buy Me a Coffee</span>
+                    </a>
+
+                    <a href="mailto:gprebbiemensah@gmail.com?subject=PayPal Donation&body=Hi! I'd like to support the GitHub-to-EXE project via PayPal." target="_blank" class="payment-option">
+                        <div class="payment-icon">💳</div>
+                        <span>PayPal</span>
+                    </a>
+
+                    <a href="mailto:gprebbiemensah@gmail.com?subject=Stripe Donation&body=Hi! I'd like to support the GitHub-to-EXE project via Stripe." target="_blank" class="payment-option">
+                        <div class="payment-icon">💰</div>
+                        <span>Stripe</span>
+                    </a>
+
+                    <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
+                        <div class="payment-icon">₿</div>
+                        <span>Bitcoin</span>
                     </div>
                 </div>
 
+                <div class="donation-goal">
+                    <p><strong>Goal:</strong> Upgrade to paid hosting ($7/month) for faster, more reliable builds</p>
+                </div>
+
                 <div class="donation-actions">
-                    <a href="https://x.com/iamGudfred" target="_blank" class="donation-btn primary">
-                        Visit X Profile
-                    </a>
                     <button class="donation-btn secondary" onclick="closeDonationModal()">
                         Close
                     </button>
@@ -286,6 +298,13 @@ function showDonationInfo() {
     `;
 
     document.body.insertAdjacentHTML('beforeend', donationHTML);
+}
+
+function showBitcoinAddress() {
+    alert('Bitcoin Address:\\n1H1KFHWxAkySDyuSR9hTaVymnzgE5G9yDc\\n\\nAddress copied to clipboard!');
+    navigator.clipboard.writeText('1H1KFHWxAkySDyuSR9hTaVymnzgE5G9yDc').catch(() => {
+        console.log('Clipboard copy failed, but address is shown in alert');
+    });
 }
 
 function closeDonationModal() {
