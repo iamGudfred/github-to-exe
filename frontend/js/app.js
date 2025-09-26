@@ -298,6 +298,16 @@ function showDonationInfo() {
     `;
 
     document.body.insertAdjacentHTML('beforeend', donationHTML);
+
+    // Add click-outside-to-close functionality
+    setTimeout(() => {
+        const modal = document.getElementById('donationModal');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeDonationModal();
+            }
+        });
+    }, 100);
 }
 
 function showBitcoinAddress() {
@@ -334,6 +344,16 @@ function showDetailedError(message) {
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', errorHTML);
+
+    // Add click-outside-to-close functionality
+    setTimeout(() => {
+        const modal = document.getElementById('errorModal');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeErrorModal();
+            }
+        });
+    }, 100);
 }
 
 function closeErrorModal() {
@@ -392,6 +412,16 @@ function showAboutStory() {
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', aboutHTML);
+
+    // Add click-outside-to-close functionality
+    setTimeout(() => {
+        const modal = document.getElementById('aboutModal');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeAboutModal();
+            }
+        });
+    }, 100);
 }
 
 function closeAboutModal() {

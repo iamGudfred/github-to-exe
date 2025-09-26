@@ -100,10 +100,13 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 30px;
     border-radius: 15px;
-    max-width: 500px;
+    max-width: 600px;
+    max-height: 90vh;
     width: 90%;
     text-align: center;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    position: relative;
 }
 
 .donation-content h3 {
