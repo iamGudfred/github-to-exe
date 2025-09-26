@@ -31,17 +31,16 @@ jobs:
 
     - name: Test Flask app startup
       run: |
-        cd backend
-        python -c "from app import app; print('Flask app imported successfully')"
+        # Test basic import from project root
+        python -c "from backend.app import app; print('Flask app imported successfully')"
 
     - name: Run basic health check
       run: |
         # Start the Flask app in background and test health endpoint
-        cd backend
-        python -m app &
+        python -m backend.app &
         sleep 5
         curl -f http://localhost:5001/api/health || echo "Health check failed, but continuing..."
-        pkill -f "python -m app" || true
+        pkill -f "python -m backend.app" || true
 
   docker:
     runs-on: ubuntu-latest
