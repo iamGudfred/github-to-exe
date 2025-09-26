@@ -48,7 +48,6 @@ async function pollBuildStatus(buildId) {
             }
 
             const status = await statusRes.json();
-            console.log('Build status:', status);
 
             if (status.status === 'completed') {
                 updateProgress(100, 'Build complete');
@@ -198,7 +197,6 @@ async function startBuild() {
                     throw new Error(forceResult.error || 'Forced build failed to start');
                 }
 
-                console.log('Forced build started with ID:', forceResult.build_id);
                 updateProgress(20, 'Build in progress...');
                 await pollBuildStatus(forceResult.build_id);
                 return;
@@ -213,7 +211,6 @@ async function startBuild() {
             throw new Error(result.error || 'Build failed to start');
         }
 
-        console.log('Build started with ID:', result.build_id);
 
         // Step 3: Poll for completion
         updateProgress(20, 'Build in progress...');
@@ -257,6 +254,24 @@ function showDonationInfo() {
                 <h3>Support This Project</h3>
                 <p>Choose your preferred way to help keep this tool free and improve build capabilities.</p>
 
+                <div class="amount-selection">
+                    <h4>Select Amount</h4>
+                    <div class="preset-amounts">
+                        <button class="amount-btn" data-amount="5">$5</button>
+                        <button class="amount-btn selected" data-amount="7">$7</button>
+                        <button class="amount-btn" data-amount="10">$10</button>
+                        <button class="amount-btn" data-amount="25">$25</button>
+                        <button class="amount-btn" data-amount="50">$50</button>
+                    </div>
+                    <div class="custom-amount">
+                        <label for="customAmount">Custom Amount:</label>
+                        <input type="number" id="customAmount" placeholder="Enter amount" min="1" step="0.01">
+                    </div>
+                    <div class="selected-amount">
+                        Selected: $<span id="selectedAmount">7</span>
+                    </div>
+                </div>
+
                 <div class="payment-methods">
                     <a href="https://x.com/iamGudfred" target="_blank" class="payment-option">
                         <div class="payment-icon"><i class="fab fa-twitter"></i></div>
@@ -299,9 +314,36 @@ function showDonationInfo() {
 
     document.body.insertAdjacentHTML('beforeend', donationHTML);
 
-    // Add click-outside-to-close functionality
+    // Add amount selection functionality
     setTimeout(() => {
         const modal = document.getElementById('donationModal');
+        const amountBtns = document.querySelectorAll('.amount-btn');
+        const customAmountInput = document.getElementById('customAmount');
+        const selectedAmountSpan = document.getElementById('selectedAmount');
+
+        // Handle preset amount buttons
+        amountBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                amountBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                customAmountInput.value = '';
+                selectedAmountSpan.textContent = btn.dataset.amount;
+            });
+        });
+
+        // Handle custom amount input with robust validation
+        customAmountInput.addEventListener('input', () => {
+            const rawValue = customAmountInput.value.trim();
+            if (!rawValue) return;
+
+            const amount = validateAmount(rawValue);
+            if (amount !== null) {
+                amountBtns.forEach(b => b.classList.remove('selected'));
+                selectedAmountSpan.textContent = amount.toFixed(2);
+            }
+        });
+
+        // Add click-outside-to-close functionality
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 closeDonationModal();
@@ -313,7 +355,7 @@ function showDonationInfo() {
 function showBitcoinAddress() {
     alert('Bitcoin Address:\\n1H1KFHWxAkySDyuSR9hTaVymnzgE5G9yDc\\n\\nAddress copied to clipboard!');
     navigator.clipboard.writeText('1H1KFHWxAkySDyuSR9hTaVymnzgE5G9yDc').catch(() => {
-        console.log('Clipboard copy failed, but address is shown in alert');
+        // Clipboard copy failed, but address is shown in alert
     });
 }
 
@@ -430,9 +472,52 @@ function closeAboutModal() {
     }
 }
 
+/**
+ * Validate amount input with comprehensive edge case handling
+ * @param {string} input - Raw input string
+ * @returns {number|null} - Validated amount or null if invalid
+ */
+function validateAmount(input) {
+    // Remove whitespace and check for empty input
+    const trimmed = input.trim();
+    if (!trimmed) return null;
+
+    // Parse as float
+    const parsed = parseFloat(trimmed);
+
+    // Check for NaN, Infinity, or negative values
+    if (isNaN(parsed) || !isFinite(parsed) || parsed <= 0) {
+        return null;
+    }
+
+    // Set reasonable bounds (min $0.50, max $10,000)
+    const MIN_AMOUNT = 0.5;
+    const MAX_AMOUNT = 10000;
+    if (parsed < MIN_AMOUNT || parsed > MAX_AMOUNT) {
+        return null;
+    }
+
+    // Round to cents to avoid floating point issues
+    return Math.round(parsed * 100) / 100;
+}
+
 // Payment processing function
 async function processPayment(method) {
     try {
+        // Get selected amount with robust validation
+        const selectedAmountSpan = document.getElementById('selectedAmount');
+        if (!selectedAmountSpan) {
+            alert('Error: Amount selection not found');
+            return;
+        }
+
+        const selectedAmount = validateAmount(selectedAmountSpan.textContent);
+
+        if (selectedAmount === null) {
+            alert('Please select or enter a valid amount between $0.50 and $10,000');
+            return;
+        }
+
         closeDonationModal(); // Close current modal
 
         const response = await fetch(`/api/payment/${method}`, {
@@ -441,7 +526,7 @@ async function processPayment(method) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                amount: 7.00,
+                amount: selectedAmount,
                 email: 'donor@example.com' // For Paystack, you might want to ask for email
             })
         });

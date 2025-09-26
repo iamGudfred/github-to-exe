@@ -17,6 +17,33 @@ import time
 from pathlib import Path
 
 from flask import Flask, request, jsonify, send_file
+from dotenv import load_dotenv
+
+# Load environment variables with fallback strategies
+import os
+def load_env_robust():
+    """Load .env file with multiple fallback strategies"""
+    env_paths = [
+        # Strategy 1: Relative to current file (assumes backend/app.py structure)
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env'),
+        # Strategy 2: Current working directory
+        os.path.join(os.getcwd(), '.env'),
+        # Strategy 3: Parent of current working directory
+        os.path.join(os.path.dirname(os.getcwd()), '.env'),
+        # Strategy 4: Environment variable override
+        os.environ.get('DOTENV_PATH', '')
+    ]
+
+    for env_path in env_paths:
+        if env_path and os.path.exists(env_path):
+            load_dotenv(env_path)
+            return env_path
+
+    # If no .env found, load_dotenv() will still work with system env vars
+    load_dotenv()
+    return None
+
+env_path = load_env_robust()
 
 from .build_manager import BuildManager, check_dependencies
 from .config import Config
@@ -159,7 +186,10 @@ def download_build(build_id):
 def create_stripe_checkout():
     """Create Stripe payment session"""
     data = request.get_json()
-    amount = data.get('amount', 7.00)  # Default $7
+    if not data or 'amount' not in data:
+        return jsonify({'error': 'Missing required field: amount'}), 400
+
+    amount = data['amount']
 
     result = create_stripe_payment(amount)
     if result['success']:
@@ -171,7 +201,10 @@ def create_stripe_checkout():
 def create_paypal_checkout():
     """Create PayPal payment"""
     data = request.get_json()
-    amount = data.get('amount', 7.00)  # Default $7
+    if not data or 'amount' not in data:
+        return jsonify({'error': 'Missing required field: amount'}), 400
+
+    amount = data['amount']
 
     result = create_paypal_payment(amount)
     if result['success']:

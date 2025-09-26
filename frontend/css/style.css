@@ -218,6 +218,96 @@ body {
     font-size: 0.95em;
 }
 
+/* Amount Selection */
+.amount-selection {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.amount-selection h4 {
+    color: white;
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+}
+
+.preset-amounts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.amount-btn {
+    padding: 10px 15px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+}
+
+.amount-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.amount-btn.selected {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: white;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+}
+
+.custom-amount {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.custom-amount label {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.custom-amount input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.custom-amount input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.custom-amount input:focus {
+    outline: none;
+    border-color: white;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.selected-amount {
+    text-align: center;
+    color: white;
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .donation-actions {
     display: flex;
     gap: 15px;
