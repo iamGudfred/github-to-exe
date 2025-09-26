@@ -293,6 +293,11 @@ function showDonationInfo() {
                         <span>Stripe <small>(Coming Soon)</small></span>
                     </div>
 
+                    <div class="payment-option" onclick="processPayment('paystack')">
+                        <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+                        <span>Cards & MoMo</span>
+                    </div>
+
                     <div class="payment-option bitcoin-option" onclick="showBitcoinAddress()">
                         <div class="payment-icon"><i class="fab fa-bitcoin"></i></div>
                         <span>Bitcoin</span>
