@@ -76,14 +76,23 @@ def index():
 # Serve static files explicitly for better compatibility
 @app.route('/css/<path:filename>')
 def css_files(filename):
+    # Security: Prevent directory traversal
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid file path", 400
     return send_file(f"../frontend/css/{filename}")
 
 @app.route('/js/<path:filename>')
 def js_files(filename):
+    # Security: Prevent directory traversal
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid file path", 400
     return send_file(f"../frontend/js/{filename}")
 
 @app.route('/assets/<path:filename>')
 def asset_files(filename):
+    # Security: Prevent directory traversal
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid file path", 400
     return send_file(f"../frontend/assets/{filename}")
 
 @app.route('/api/health')

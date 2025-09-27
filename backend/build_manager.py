@@ -191,6 +191,20 @@ class PyInstallerManager:
         dist_path = output_dir / "dist"
         work_path = output_dir / "work"
 
+        # Security: Validate entry_point is safe
+        if not entry_point.exists():
+            raise BuildError("Entry point file does not exist")
+        if not entry_point.suffix == '.py':
+            raise BuildError("Entry point must be a Python file")
+        if not entry_point.is_file():
+            raise BuildError("Entry point must be a regular file")
+
+        # Security: Validate paths don't contain directory traversal
+        try:
+            entry_point.resolve().relative_to(entry_point.parent.resolve())
+        except ValueError:
+            raise BuildError("Invalid entry point path")
+
         # Build command
         build_cmd = cmd + [
             "--onefile",
@@ -219,7 +233,9 @@ class PyInstallerManager:
             raise BuildError(f"PyInstaller failed: {e.stderr}")
 
         # Verify executable was created
-        exe_path = dist_path / f"{exe_name}.exe"
+        # Security: Sanitize exe_name again before path construction
+        safe_exe_name = "".join(c for c in exe_name if c.isalnum() or c in "._-")
+        exe_path = dist_path / f"{safe_exe_name}.exe"
         if not exe_path.exists():
             raise BuildError("Executable was not created")
 
