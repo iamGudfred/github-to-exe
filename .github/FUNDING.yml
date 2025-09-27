@@ -1,0 +1,9 @@
+# GitHub Sponsorships Configuration
+# This adds a "Sponsor" button to your repository
+
+# Main donation page with Paystack (Mobile Money for Ghana)
+custom: ["https://github-to-exe.onrender.com/"]
+
+# Existing platforms
+patreon: Gudfred
+buy_me_a_coffee: gudfred
