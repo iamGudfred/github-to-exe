@@ -287,10 +287,14 @@ def payment_success():
             }
         </style>
         <script>
-            // If opened in popup, close popup and redirect parent window
-            if (window.opener) {
-                window.opener.location.href = '/';
-                window.close();
+            // Handle back button click for popup windows
+            function goBack() {
+                if (window.opener) {
+                    window.opener.location.href = '/';
+                    window.close();
+                } else {
+                    window.location.href = '/';
+                }
             }
         </script>
     </head>
@@ -301,10 +305,10 @@ def payment_success():
             </div>
             <h1>Thank you for your support!</h1>
             <p>Your donation will help us upgrade to better hosting for faster builds and serve the community better.</p>
-            <a href="/" class="back-btn">
+            <button onclick="goBack()" class="back-btn">
                 <i class="fas fa-arrow-left"></i>
                 Back to GitHub-to-EXE Converter
-            </a>
+            </button>
         </div>
     </body>
     </html>
@@ -372,10 +376,14 @@ def payment_cancel():
             }
         </style>
         <script>
-            // If opened in popup, close popup and redirect parent window
-            if (window.opener) {
-                window.opener.location.href = '/';
-                window.close();
+            // Handle back button click for popup windows
+            function goBack() {
+                if (window.opener) {
+                    window.opener.location.href = '/';
+                    window.close();
+                } else {
+                    window.location.href = '/';
+                }
             }
         </script>
     </head>
@@ -386,10 +394,10 @@ def payment_cancel():
             </div>
             <h1>Payment Cancelled</h1>
             <p>No worries! You can still support us by starring the project on GitHub or trying other payment methods.</p>
-            <a href="/" class="back-btn">
+            <button onclick="goBack()" class="back-btn">
                 <i class="fas fa-arrow-left"></i>
                 Back to GitHub-to-EXE Converter
-            </a>
+            </button>
         </div>
     </body>
     </html>
