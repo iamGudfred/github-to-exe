@@ -257,6 +257,22 @@ document.addEventListener('DOMContentLoaded', function() {
     windowsOption.classList.add('selected');
 });
 
+// Load sample repository
+function loadSampleRepo() {
+    const repoInput = document.getElementById('repoUrl');
+    repoInput.value = 'https://github.com/iamGudfred/test_simple_repo';
+
+    // Also uncheck console window for GUI app
+    const consoleCheckbox = document.getElementById('showConsole');
+    consoleCheckbox.checked = false;
+
+    // Brief visual feedback
+    repoInput.style.backgroundColor = '#e8f5e8';
+    setTimeout(() => {
+        repoInput.style.backgroundColor = '';
+    }, 1000);
+}
+
 // Donation modal function
 function showDonationInfo() {
     const donationHTML = `

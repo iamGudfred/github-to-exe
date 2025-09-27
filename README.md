@@ -67,17 +67,50 @@ This tool provides a simple web interface where users can paste a GitHub reposit
 
 1. Visit the web interface
 2. Paste a GitHub repository URL containing Python code
-3. Click "Create EXE File"
-4. Wait for the build process to complete (2-5 minutes)
-5. Download the resulting ZIP file
-6. Extract and run the executable
+3. Configure build options (see below)
+4. Click "Build Executable"
+5. Wait for the build process to complete (2-5 minutes)
+6. Download the resulting ZIP file
+7. Extract and run the executable
+
+### Build Options
+
+Configure how your executable is built:
+
+#### Console Window
+- **Checked ✅**: Shows a console/terminal window when the executable runs
+  - **Use for**: Text-based applications, CLI tools, scripts with print statements
+  - **Users see**: Black terminal window alongside your program
+  - **Good for**: Debugging, development, command-line tools
+
+- **Unchecked ❌**: No console window (windowed mode)
+  - **Use for**: GUI applications, desktop apps, polished end-user software
+  - **Users see**: Only your application interface (clean experience)
+  - **Good for**: Professional desktop applications, user-friendly tools
+
+#### Other Build Options (Coming Soon)
+
+- **Include Dependencies** *(Disabled)*: Bundle all required Python packages
+- **Optimize Size** *(Disabled)*: Compress executable for smaller file size
+- **Code Obfuscation** *(Disabled)*: Make source code harder to reverse-engineer
+
+### Test Repository
+
+Try our official test repository to see how the converter works:
+
+**🧮 GUI Calculator**: `https://github.com/iamGudfred/test_simple_repo`
+- **Perfect for testing**: Clean, simple Python GUI application
+- **Recommended settings**: Console Window **unchecked** for clean GUI experience
+- **What you get**: Professional-looking calculator executable
+- **No security concerns**: Safe, simple math operations only
 
 ### Example Repositories
 
 The tool works best with Python projects that have clear entry points:
 - Projects with `main.py`, `app.py`, or `run.py`
 - Scripts with `if __name__ == "__main__":` blocks
-- Simple command-line tools or GUI applications
+- Simple command-line tools (Console Window **on**)
+- GUI applications using tkinter, PyQt, etc. (Console Window **off**)
 
 ## Security Considerations
 

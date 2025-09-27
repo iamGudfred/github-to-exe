@@ -55,11 +55,16 @@
             <!-- Tab 1: GitHub URL -->
             <div class="tab-content active" id="tab-0">
                 <div class="input-section">
-                    <h3>Repository URL</h3>
+                    <h3>Paste Repository URL</h3>
                     <input type="text" class="url-input" id="repoUrl"
                            placeholder="https://github.com/username/repository-name">
-                    <p><strong>Requirements:</strong> Public Python repository with main.py, app.py, or similar entry point<br>
-                    <em>Example: https://github.com/user/python-calculator</em></p>
+                    <div class="url-help">
+                        <p><strong>Requirements:</strong> Public Python repository with main.py, app.py, or similar entry point<br>
+                        <em>Tip: Use our sample repository to test the converter!</em></p>
+                        <button type="button" class="sample-btn" onclick="loadSampleRepo()">
+                            🧪 Test Sample Repository
+                        </button>
+                    </div>
                 </div>
             </div>
 
