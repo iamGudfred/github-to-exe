@@ -282,9 +282,13 @@ class BuildManager:
                         'can_force': True
                     }
 
-            # Generate safe executable name
+            # Generate safe executable name with strict validation
             repo_name = repo_url.rstrip('/').split('/')[-1]
             exe_name = "".join(c for c in repo_name if c.isalnum() or c in "._-") or "app"
+            # Additional security: limit length and ensure it starts with alphanumeric
+            exe_name = exe_name[:50]  # Limit length
+            if not exe_name[0].isalnum():
+                exe_name = "app_" + exe_name
 
             # Build executable
             try:
