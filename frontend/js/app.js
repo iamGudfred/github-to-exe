@@ -558,8 +558,7 @@ async function processPayment(method) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                amount: selectedAmount,
-                email: 'donor@example.com' // For Paystack, you might want to ask for email
+                amount: selectedAmount
             })
         });
 

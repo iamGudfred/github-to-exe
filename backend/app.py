@@ -217,7 +217,8 @@ def create_paystack_checkout():
     """Create Paystack payment for Mobile Money"""
     data = request.get_json()
     amount = data.get('amount', 50.00)  # Default 50 GHS
-    email = data.get('email', 'donor@example.com')
+    # Generate unique anonymous email for each donation
+    email = f'anonymous-{int(time.time())}@github-to-exe.com'
 
     result = create_paystack_payment(amount, 'GHS', email)
     if result['success']:
