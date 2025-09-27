@@ -228,21 +228,171 @@ def create_paystack_checkout():
 @app.route('/success')
 def payment_success():
     return """
-    <html><body style="font-family: Arial; text-align: center; padding: 50px;">
-        <h2>✅ Thank you for your support!</h2>
-        <p>Your donation will help us upgrade to better hosting for faster builds.</p>
-        <a href="/" style="color: #667eea; text-decoration: none;">← Back to GitHub-to-EXE Converter</a>
-    </body></html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container {
+                background: white;
+                border-radius: 20px;
+                padding: 60px 40px;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+                max-width: 500px;
+                margin: 20px;
+            }
+            .success-icon {
+                font-size: 64px;
+                color: #28a745;
+                margin-bottom: 30px;
+            }
+            h1 {
+                color: #333;
+                margin-bottom: 20px;
+                font-size: 28px;
+                font-weight: 600;
+            }
+            p {
+                color: #666;
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 40px;
+            }
+            .back-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                background: #667eea;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            .back-btn:hover {
+                background: #5a6fd8;
+                transform: translateY(-2px);
+            }
+        </style>
+        <script>
+            // If opened in popup, close popup and redirect parent window
+            if (window.opener) {
+                window.opener.location.href = '/';
+                window.close();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Thank you for your support!</h1>
+            <p>Your donation will help us upgrade to better hosting for faster builds and serve the community better.</p>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to GitHub-to-EXE Converter
+            </a>
+        </div>
+    </body>
+    </html>
     """
 
 @app.route('/cancel')
 def payment_cancel():
     return """
-    <html><body style="font-family: Arial; text-align: center; padding: 50px;">
-        <h2>Payment Cancelled</h2>
-        <p>No worries! You can still support us by starring the project on GitHub.</p>
-        <a href="/" style="color: #667eea; text-decoration: none;">← Back to GitHub-to-EXE Converter</a>
-    </body></html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                min-height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container {
+                background: white;
+                border-radius: 20px;
+                padding: 60px 40px;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+                max-width: 500px;
+                margin: 20px;
+            }
+            .cancel-icon {
+                font-size: 64px;
+                color: #ffc107;
+                margin-bottom: 30px;
+            }
+            h1 {
+                color: #333;
+                margin-bottom: 20px;
+                font-size: 28px;
+                font-weight: 600;
+            }
+            p {
+                color: #666;
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 40px;
+            }
+            .back-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                background: #667eea;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            .back-btn:hover {
+                background: #5a6fd8;
+                transform: translateY(-2px);
+            }
+        </style>
+        <script>
+            // If opened in popup, close popup and redirect parent window
+            if (window.opener) {
+                window.opener.location.href = '/';
+                window.close();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="cancel-icon">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <h1>Payment Cancelled</h1>
+            <p>No worries! You can still support us by starring the project on GitHub or trying other payment methods.</p>
+            <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to GitHub-to-EXE Converter
+            </a>
+        </div>
+    </body>
+    </html>
     """
 
 if __name__ == '__main__':
