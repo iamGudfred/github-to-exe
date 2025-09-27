@@ -288,11 +288,14 @@ class BuildManager:
 
             # Build executable
             try:
+                # Get console setting from build_data, default to False (no console)
+                show_console = build_data.get('show_console', False)
+
                 exe_path = PyInstallerManager.build_executable(
                     entry_point=entry_point,
                     output_dir=build_path,
                     exe_name=exe_name,
-                    console=True,
+                    console=show_console,
                     timeout=Config.BUILD_TIMEOUT
                 )
             except BuildError as e:

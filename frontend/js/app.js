@@ -152,10 +152,17 @@ async function startBuild() {
 
         // Step 2: Start build
         updateProgress(15, 'Starting build process...');
+
+        // Get console window setting
+        const showConsole = document.getElementById('showConsole').checked;
+
         const buildRes = await fetch('/api/build', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url: repoUrl })
+            body: JSON.stringify({
+                url: repoUrl,
+                show_console: showConsole
+            })
         });
 
         if (!buildRes.ok) {
@@ -185,7 +192,11 @@ async function startBuild() {
                 const forceRes = await fetch('/api/build', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: repoUrl, force_build: true })
+                    body: JSON.stringify({
+                        url: repoUrl,
+                        force_build: true,
+                        show_console: showConsole
+                    })
                 });
 
                 if (!forceRes.ok) {
