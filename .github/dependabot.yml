@@ -1,0 +1,27 @@
+  # Dependabot configuration for GitHub-to-EXE project
+  # Automatically updates Python dependencies and GitHub Actions
+
+  version: 2
+  updates:
+    # Python dependencies (pip/requirements.txt)
+    - package-ecosystem: "pip"
+      directory: "/backend"
+      schedule:
+        interval: "weekly"
+      open-pull-requests-limit: 10
+      reviewers:
+        - "iamGudfred"
+      commit-message:
+        prefix: "deps"
+        include: "scope"
+
+    # GitHub Actions (if you add workflows later)
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+        interval: "weekly"
+      open-pull-requests-limit: 5
+      reviewers:
+        - "iamGudfred"
+      commit-message:
+        prefix: "ci"
