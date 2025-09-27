@@ -548,7 +548,21 @@ async function processPayment(method) {
         } else if (method === 'paypal' && data.approval_url) {
             window.open(data.approval_url, '_blank');
         } else if (method === 'paystack' && data.authorization_url) {
-            window.open(data.authorization_url, '_blank');
+            // Use Paystack's recommended mobile-friendly approach
+            try {
+                // Try to open iframe first (works on desktop)
+                const popup = window.open(data.authorization_url, '_blank', 'width=500,height=600');
+
+                // Fallback for mobile browsers - redirect after timeout if popup fails
+                setTimeout(() => {
+                    if (!popup || popup.closed) {
+                        window.location.href = data.authorization_url;
+                    }
+                }, 1000);
+            } catch (e) {
+                // Direct redirect if popup fails completely
+                window.location.href = data.authorization_url;
+            }
         } else {
             throw new Error('Payment URL not received from server');
         }
