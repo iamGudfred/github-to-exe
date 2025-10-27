@@ -4,4 +4,4 @@ PyInstaller==6.10.0
 stripe==7.12.0
 paypalrestsdk==1.13.3
 requests==2.32.3
-python-dotenv==1.0.0
+python-dotenv==1.2.1
