@@ -170,7 +170,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Godfred Prebbie Mensah**
 - GitHub: [@iamGudfred](https://github.com/iamGudfred)
-- Email: gprebbiemensah@gmail.com
+- Email: 
 
 ## Acknowledgments
 
